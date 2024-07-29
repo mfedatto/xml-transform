@@ -3,9 +3,9 @@
 ## Overview
 
 This project provides a solution for transforming XML configuration files using MSBuild.
-It includes an anemic .csproj file that defines the necessary targets and pom to perform
-XML transformations and copy the results to a specified destination. This setup is useful for
-automating configuration updates and managing different environments like development, staging,
+It includes an anemic .csproj file that defines the necessary targets and pom to perform XML
+transformations and copy the results to a specified destination. This setup is useful for automating
+configuration updates and managing different environments like development, staging,
 and production.
 
 ## Features
@@ -16,8 +16,7 @@ and production.
 
 ## Prerequisites
 
-- [.NET 6.0 SDK](https://dotnet.microsoft.com/download) or later
-- `Microsoft.Web.Xdt` (included via package reference)
+- `Microsoft.Web.Publishing.Tasks` from Visual Studio MS Build Extensions
 
 ## Getting Started
 
@@ -38,6 +37,10 @@ msbuild /t:TransformConfig /p:FileName="Web" /p:Extension="config" /p:TargetCont
 ```
 
 #### Parameters
+
+#### `FilePathPrefix`
+- **Default Value**: (empty)
+- **Description**: Base path for your configuration files.
 
 ##### `FileName`
 - **Default Value**: `Web`
@@ -171,19 +174,71 @@ msbuild /t:TransformConfig /p:FileName="Web" /p:Extension="config" /p:TargetCont
 
 ##### `OverwriteDestination`
 - **Default Value**: `true`
-- **Description**: Whether to overwrite existing files in the destination.
+- **Description**: Whether to overwrite existing file in the destination.
 - **Values**:
   - `true`
   - `false`
 
-### Example Files
-
-(...)
+##### `DeleteTransformedFile`
+- **Default Value**: `true`
+- **Description**: Whether to delete transformed file after copied to destination.
+- **Values**:
+  - `true`
+  - `false`
 
 ### Targets
 
 - `TransformConfig`: Transforms the source XML file using the specified transformation file and
 copies the result to the destination.
+
+### Examples
+
+#### Web.config
+
+The default values set the file name to `Web`, the extension to `config`, and the context to
+`Release`. Therefore, for `Web.config` transformed by `Web.Release.config`, it is not necessary to
+specify parameters.
+
+```sh
+msbuild TransformXml.csproj /t:TransformXml
+```
+
+Therefore, for `Staging` or `pipeline` contexts it only requires the `/p:TargetContext` flag.
+
+```sh
+msbuild TransformXml.csproj /t:TransformXml /p:TargetContext=Staging
+```
+
+Example files:
+- **Source**: [Web.config](./examples/Web.config/Web.config)
+- **Target**: [Web.Release.config](./examples/Web.config/Web.Release.config)
+- **Transformed**: [Web.config](./examples/Web.config/transformed/Web.config)
+
+#### App.config
+
+The `App.config` transformation wasn't supported by Visual Studio but it is supported by `msbuild`.
+Also, the destination file isn't named `App.config`, but the same name as the executable file name,
+like for `my-app.exe` being `my-app.config`.
+
+```sh
+msbuild TransformXml.csproj /t:TransformXml /p:FileName=App /p:DestinationFileName=my-app
+```
+
+- **Source**: [App.config](./examples/App.config/App.config)
+- **Target**: [App.Release.config](./examples/App.config/App.Release.config)
+- **Transformed**: [my-app.config](./examples/App.config/my-app.config)
+
+#### pom.xml
+
+For transforming any other `XML` just inform the `/p:Extension` and the magic is done.
+
+```sh
+msbuild TransformXml.csproj /t:TransformXml /p:FileName=pom /p:Extension=xml
+```
+
+- **Source**: [pom.xml](./examples/pom.xml/pom.xml)
+- **Target**: [pom.Release.xml](./examples/pom.xml/pom.Release.xml)
+- **Transformed**: [pom.xml](./examples/pom.xml/transformed/pom.xml)
 
 ## Contributing
 
