@@ -27,7 +27,7 @@
         <PackageReference Include="Microsoft.Web.Xdt" Version="3.0.0" />
     </ItemGroup>
 
-    <Target Name="TransformConfig">
+    <Target Name="XmlTransform">
         <Message Importance="high"
             Text="Transforming $(SourceConfig) with $(TargetConfig) to $(OutputConfig)..." />
         <TransformXml Source="$(SourceConfig)" Transform="$(TargetConfig)"
