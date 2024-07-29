@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<properties xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+    <applicationSettings>
+        <add key="Environment" value="Production" xdt:Transform="SetAttributes"
+            xdt:Locator="Match(key)" />
+        <add key="Version" value="1.1.0" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    </applicationSettings>
+    <databaseSettings>
+        <add key="ConnectionString"
+            value="Server=prod-server;Database=prod-db;User Id=prod-user;Password=prod-password;"
+            xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    </databaseSettings>
+</properties>

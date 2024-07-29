@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>XmlTransform</RootNamespace>
+
+        <FileName>Web</FileName>
+        <SourceFileName>$(FileName)</SourceFileName>
+        <TargetFileName>$(FileName)</TargetFileName>
+        <OutputFileName>$(FileName)</OutputFileName>
+        <DestinationFileName>$(FileName)</DestinationFileName>
+        <Extension>config</Extension>
+        <SourceExtension>$(Extension)</SourceExtension>
+        <TargetExtension>$(Extension)</TargetExtension>
+        <OutputExtension>$(Extension)</OutputExtension>
+        <DestinationExtension>$(Extension)</DestinationExtension>
+        <TargetContext>Release</TargetContext>
+        <OutputContext>Transformed</OutputContext>
+        <SourceConfig>$(SourceFileName).$(SourceExtension)</SourceConfig>
+        <TargetConfig>$(TargetFileName).$(TargetContext).$(TargetExtension)</TargetConfig>
+        <OutputConfig>$(OutputFileName).$(OutputContext).$(OutputExtension)</OutputConfig>
+        <DestinationConfig>$(DestinationFileName).$(DestinationExtension)</DestinationConfig>
+        <OverwriteDestination>true</OverwriteDestination>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Web.Xdt" Version="3.0.0" />
+    </ItemGroup>
+
+    <Target Name="TransformConfig">
+        <Message Importance="high"
+            Text="Transforming $(SourceConfig) with $(TargetConfig) to $(OutputConfig)..." />
+        <TransformXml Source="$(SourceConfig)" Transform="$(TargetConfig)"
+            Destination="$(OutputConfig)" />
+        <Copy SourceFiles="$(OutputConfig)" DestinationFiles="$(DestinationConfig)"
+            OverwriteReadOnlyFiles="$(OverwriteDestination)" />
+        <Message Importance="high"
+            Text="Transformation complete. Output available at $(DestinationConfig)." />
+    </Target>
+
+</Project>

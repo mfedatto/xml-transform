@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<properties>
+    <applicationSettings>
+        <add key="ApplicationName" value="MyApp" />
+        <add key="Version" value="1.0.0" />
+        <add key="Environment" value="Development" />
+    </applicationSettings>
+    <databaseSettings>
+        <add key="ConnectionString"
+            value="Server=localhost;Database=mydb;User Id=myuser;Password=mypassword;" />
+    </databaseSettings>
+</properties>
