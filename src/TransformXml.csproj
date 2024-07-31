@@ -29,19 +29,19 @@
 
     <Target Name="PerformTransformXml">
         <Message Importance="high"
-            Text="Transforming $(SourceConfig) with $(TargetConfig) to $(OutputConfig)..." />
+            Text="Transforming $(FilePathPrefix)$(SourceConfig) with $(FilePathPrefix)$(TargetConfig) to $(FilePathPrefix)$(OutputConfig)..." />
         <TransformXml Source="$(FilePathPrefix)$(SourceConfig)" Transform="$(FilePathPrefix)$(TargetConfig)"
             Destination="$(FilePathPrefix)$(OutputConfig)" />
-        <Copy SourceFiles="$(OutputConfig)" DestinationFiles="$(DestinationConfig)"
+        <Copy SourceFiles="$(FilePathPrefix)$(OutputConfig)" DestinationFiles="$(FilePathPrefix)$(DestinationConfig)"
             OverwriteReadOnlyFiles="$(OverwriteDestination)" />
         <Message Importance="high"
-            Text="Transformation complete. Output available at $(DestinationConfig)." />
+            Text="Transformation complete. Output available at $(FilePathPrefix)$(DestinationConfig)." />
     </Target>
 
     <Target Name="DeleteTransformedFile" Condition="'$(DeleteTransformedFile)' == 'true'">
         <Message Importance="high"
-            Text="Deleting transformed file $(OutputConfig) because DeleteTransformedFile is set to true." />
-        <Delete Files="$(OutputConfig)" />
+            Text="Deleting transformed file $(FilePathPrefix)$(OutputConfig) because DeleteTransformedFile is set to true." />
+        <Delete Files="$(FilePathPrefix)$(OutputConfig)" />
     </Target>
 
     <Target Name="TransformXml" DependsOnTargets="PerformTransformXml;DeleteTransformedFile" />
